@@ -1,0 +1,29 @@
+version: '2'
+services:
+
+  node-agent:
+    image: node-mongo-app:1.0
+    ports:
+      - 3000:3000/tcp
+    volumes:
+      - ./:/usr/src/app
+    networks:
+      - app-tier
+    restart: always
+
+  mongodb:
+    image: bitnami/mongodb:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MONGODB_USERNAME=my_user
+      - MONGODB_DATABASE=my_database
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb_data:/bitnami/mongodb
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
